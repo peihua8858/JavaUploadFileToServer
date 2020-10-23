@@ -87,6 +87,17 @@ public abstract class IParser {
     }
 
     /**
+     * 只做文件上传
+     */
+    @Throws(Exception::class)
+    protected suspend fun onlyUploadFile(file: File, model: AppInfoModel) {
+        model.fileSize = file.length()
+        model.filePath = file.absolutePath
+        model.filePathType = AppInfoModel.FileType.LOG_SERVICE
+        httpClient.onlyUploadFile(model)
+    }
+
+    /**
      * App 包解析
      *
      * @param parameter
@@ -110,13 +121,19 @@ public abstract class IParser {
          */
         @JvmStatic
         @Throws(IllegalAccessException::class)
-        fun createParser(name: String?): IParser {
-            if ("apk".equals(name, ignoreCase = true)) {
-                return ApkParser()
-            } else if ("ipa".equals(name, ignoreCase = true)) {
-                return IpaParser()
+        fun createParser(name: String?, isOnlyUploadFile: Boolean): IParser {
+            return when {
+                isOnlyUploadFile -> {
+                    OtherParser()
+                }
+                "apk".equals(name, ignoreCase = true) -> {
+                    ApkParser()
+                }
+                "ipa".equals(name, ignoreCase = true) -> {
+                    IpaParser()
+                }
+                else -> throw IllegalAccessException(MessageFormat.format("The file type \"{0}\" Unsupported", name))
             }
-            throw IllegalAccessException(MessageFormat.format("The file type \"{0}\" Unsupported", name))
         }
     }
 }

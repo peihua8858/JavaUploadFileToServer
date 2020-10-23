@@ -29,6 +29,16 @@ public interface Api {
     Call<HttpResponse<String>> uploadFile(@Body RequestBody params);
 
     /**
+     * only upload file
+     *
+     * @author dingpeihua
+     * @date 2019/10/17 17:35
+     * @version 1.0
+     */
+    @POST(Configs.URL_ONLY_UPLOAD_FILE)
+    Call<HttpResponse<String>> onlyUploadFile(@Body RequestBody params);
+
+    /**
      * 上传APP数据包
      *
      * @author dingpeihua

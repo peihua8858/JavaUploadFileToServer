@@ -1,0 +1,18 @@
+# Created by .ignore support plugin (hsz.mobi)
+.idea
+target
+*.iml
+.idea/.gitignore
+.idea/UploadFile.iml
+.idea/artifacts/
+.idea/compiler.xml
+.idea/encodings.xml
+.idea/inspectionProfiles/
+.idea/jarRepositories.xml
+.idea/misc.xml
+.idea/uiDesigner.xml
+.idea/vcs.xml
+UploadFile.iml
+dependency-reduced-pom.xml
+src/test/
+target/

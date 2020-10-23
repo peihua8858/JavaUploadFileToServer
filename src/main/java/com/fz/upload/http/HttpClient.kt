@@ -12,7 +12,7 @@ import kotlin.coroutines.resumeWithException
 
 internal class HttpClient {
     companion object {
-        val httpClient = HttpClient();
+        val httpClient = HttpClient()
     }
 
     @Throws(PluginException::class)
@@ -37,8 +37,8 @@ internal class HttpClient {
             val fileResponse = ApiManager.api().uploadFile(requestParams
                     .put("file", File(appBean.filePath), "application/octet-stream")
                     .createFileRequestBody())
-            var iconHttpResponse = iconResponse.await();
-            var fileHttpResponse = fileResponse.await();
+            val iconHttpResponse = iconResponse.await();
+            val fileHttpResponse = fileResponse.await();
             if (!iconHttpResponse.isSuccess) {
                 throw RuntimeException("Upload launcher icon failure.")
             }
@@ -47,20 +47,38 @@ internal class HttpClient {
             if (!fileHttpResponse.isSuccess) {
                 throw PluginException("Upload app file failure.")
             }
-            appBean.filePath = fileHttpResponse.data;
-            appBean.fileName = fileHttpResponse.data;
-            appBean.downloadUrl = fileHttpResponse.data;
+            appBean.filePath = fileHttpResponse.data
+            appBean.fileName = fileHttpResponse.data
+            appBean.downloadUrl = fileHttpResponse.data
             print("appFilePath:" + appBean.filePath)
             val appInfoResponse = ApiManager.api().uploadInfo(appBean)
-            var appInfoHttpResponse = appInfoResponse.await();
+            val appInfoHttpResponse = appInfoResponse.await();
             if (!appInfoHttpResponse.isSuccess) {
                 throw PluginException("Upload app data failure.")
             }
             print("HttpResponse:$appInfoHttpResponse")
-            return appInfoHttpResponse.data;
+            return appInfoHttpResponse.data
         } catch (e: Exception) {
             throw PluginException(e)
         }
+    }
+    @Throws(PluginException::class)
+    suspend fun onlyUploadFile(appBean: AppInfoModel): String {
+        if (StringUtils.isEmpty(appBean.filePath)) {
+            throw UploadFileException("the app file path is empty.")
+        }
+        val requestParams = RequestParams()
+                .put("platform", appBean.platform)
+        val fileResponse = ApiManager.api().onlyUploadFile(requestParams
+                .put("file", File(appBean.filePath), "application/octet-stream")
+                .createFileRequestBody())
+        val fileHttpResponse = fileResponse.await()
+        if (!fileHttpResponse.isSuccess) {
+            throw PluginException("Upload app file failure.")
+        }
+        appBean.filePath = fileHttpResponse.data
+        print("appFilePath:" + appBean.filePath)
+        return fileHttpResponse.data
     }
 }
 

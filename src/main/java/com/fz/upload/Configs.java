@@ -16,7 +16,10 @@ public class Configs {
      * 上传APP文件接口路径
      */
     public static final String URL_UPLOAD_FILE = "app/uploadFile";
-
+    /**
+     * 上传任意文件接口路径
+     */
+    public static final String URL_ONLY_UPLOAD_FILE = "app/onlyUploadFile";
     public static String getServerHost() {
         return checkServerIp(SERVER_IP);
     }

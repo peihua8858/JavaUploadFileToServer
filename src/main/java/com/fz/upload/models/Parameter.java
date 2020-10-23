@@ -9,7 +9,8 @@ public class Parameter {
     private File file;
     private String buildType;
     private String serverIp;
-
+    private boolean isOnlyUploadFile = false;
+    private boolean isOverwriteFile = false;
     public File getFile() {
         return file;
     }
@@ -32,5 +33,21 @@ public class Parameter {
 
     public void setServerIp(String serverIp) {
         this.serverIp = serverIp;
+    }
+
+    public boolean isOnlyUploadFile() {
+        return isOnlyUploadFile;
+    }
+
+    public boolean isOverwriteFile() {
+        return isOverwriteFile;
+    }
+
+    public void setOnlyUploadFile(boolean onlyUploadFile) {
+        isOnlyUploadFile = onlyUploadFile;
+    }
+
+    public void setOverwriteFile(boolean overwriteFile) {
+        isOverwriteFile = overwriteFile;
     }
 }
