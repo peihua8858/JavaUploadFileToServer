@@ -10,7 +10,7 @@ class OtherParser : IParser() {
         app.platform = "other"
         app.fileName = appPath.name
         app.filePath = appPath.absolutePath
-        onlyUploadFile(appPath, app)
+        uploadFile(appPath, app, parameter.isOverwriteFile, parameter.serverIp)
         return app
     }
 }

@@ -50,11 +50,13 @@ public class Command implements Runnable {
         parameter.setOverwriteFile(isOverwriteFile == 1);
         String fileName = file.getName();
         String extensionName = FilenameUtils.getExtension(fileName);
-        System.out.println("uploadAppFile>>>fileName:" + fileName + ",extensionName:" + extensionName);
+        System.out.println("uploadFile>>>fileName:" + fileName + ",extensionName:" + extensionName);
         IParser parser = IParser.createParser(extensionName, isOnlyUploadFile == 1);
         ApiManager.newInstance(Configs.checkServerIp(serverIp));
         CompletableFuture<AppInfoModel> future = parser.onParserProcess(parameter);
         AppInfoModel model = future.get();
-        System.out.println("uploadAppFile>>>model:" + model);
+        if (isOnlyUploadFile != 1) {
+            System.out.println("\nuploadFile>>>model:" + model);
+        }
     }
 }

@@ -90,11 +90,12 @@ public abstract class IParser {
      * 只做文件上传
      */
     @Throws(Exception::class)
-    protected suspend fun onlyUploadFile(file: File, model: AppInfoModel) {
+    protected suspend fun uploadFile(file: File, model: AppInfoModel,
+                                     overwrite: Boolean, serverIp: String) {
         model.fileSize = file.length()
         model.filePath = file.absolutePath
         model.filePathType = AppInfoModel.FileType.LOG_SERVICE
-        httpClient.onlyUploadFile(model)
+        httpClient.onlyUploadFile(model, overwrite, serverIp)
     }
 
     /**

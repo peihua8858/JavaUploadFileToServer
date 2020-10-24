@@ -37,8 +37,8 @@ internal class HttpClient {
             val fileResponse = ApiManager.api().uploadFile(requestParams
                     .put("file", File(appBean.filePath), "application/octet-stream")
                     .createFileRequestBody())
-            val iconHttpResponse = iconResponse.await();
-            val fileHttpResponse = fileResponse.await();
+            val iconHttpResponse = iconResponse.await()
+            val fileHttpResponse = fileResponse.await()
             if (!iconHttpResponse.isSuccess) {
                 throw RuntimeException("Upload launcher icon failure.")
             }
@@ -56,19 +56,21 @@ internal class HttpClient {
             if (!appInfoHttpResponse.isSuccess) {
                 throw PluginException("Upload app data failure.")
             }
-            print("HttpResponse:$appInfoHttpResponse")
+            println("HttpResponse:$appInfoHttpResponse")
             return appInfoHttpResponse.data
         } catch (e: Exception) {
             throw PluginException(e)
         }
     }
+
     @Throws(PluginException::class)
-    suspend fun onlyUploadFile(appBean: AppInfoModel): String {
+    suspend fun onlyUploadFile(appBean: AppInfoModel, overwrite: Boolean, serverIp: String): String {
         if (StringUtils.isEmpty(appBean.filePath)) {
             throw UploadFileException("the app file path is empty.")
         }
         val requestParams = RequestParams()
                 .put("platform", appBean.platform)
+                .put("overWrite", overwrite)
         val fileResponse = ApiManager.api().onlyUploadFile(requestParams
                 .put("file", File(appBean.filePath), "application/octet-stream")
                 .createFileRequestBody())
@@ -77,7 +79,7 @@ internal class HttpClient {
             throw PluginException("Upload app file failure.")
         }
         appBean.filePath = fileHttpResponse.data
-        print("appFilePath:" + appBean.filePath)
+        println("success: http://" + serverIp + ":8090/" + appBean.filePath)
         return fileHttpResponse.data
     }
 }
